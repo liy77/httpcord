@@ -595,7 +595,7 @@ func (c *ApplicationCommand) SetName(name string) *ApplicationCommand {
 }
 
 func (c *ApplicationCommand) SetDescription(description string) *ApplicationCommand {
-	c.Name = description
+	c.Description = description
 	return c
 }
 
