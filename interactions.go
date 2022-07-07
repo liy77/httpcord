@@ -410,7 +410,7 @@ func (s *SelectMenuComponent) SetCustomID(customID string) *SelectMenuComponent 
 
 // ApplicationCommandOptionBuilder
 
-func ApplicatioNCommandOptionBuilder() *ApplicationCommandOption {
+func ApplicationCommandOptionBuilder() *ApplicationCommandOption {
 	return &ApplicationCommandOption{}
 }
 
