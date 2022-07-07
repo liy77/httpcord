@@ -3,13 +3,13 @@ package httpcord
 import (
 	"encoding/json"
 
+	"github.com/JustAWaifuHunter/httpcord/endpoints"
 	"github.com/valyala/fasthttp"
 )
 
-func Request(URI, method string, body interface{}, clientToken string) *fasthttp.Response {
+func Request(URI, method string, body interface{}, clientToken string) []byte {
 	req := fasthttp.AcquireRequest()
-	res := fasthttp.AcquireResponse()
-
+	defer fasthttp.ReleaseRequest(req)
 	req.SetRequestURI(URI)
 
 	if body != nil {
@@ -25,14 +25,26 @@ func Request(URI, method string, body interface{}, clientToken string) *fasthttp
 		req.Header.Set("Authorization", "Bot "+clientToken)
 	}
 
+	res := fasthttp.AcquireResponse()
+	defer fasthttp.ReleaseResponse(res)
+
 	err := fasthttp.Do(req, res)
 
 	if err != nil {
 		panic("Error in request: " + err.Error())
 	}
 
-	fasthttp.ReleaseRequest(req)
-	fasthttp.ReleaseResponse(res)
+	return res.Body()
+}
 
-	return res
+func ApplicationCommandsBulkOverwrite(applicationID string, commands []*ApplicationCommand, guildID, clientToken string) (createdCommands []*ApplicationCommand, err error) {
+	uri := endpoints.DiscordURL + endpoints.DiscordAPI + endpoints.ApplicationCommandsGlobal(applicationID)
+
+	if guildID != "" {
+		uri = endpoints.DiscordURL + endpoints.DiscordAPI + endpoints.ApplicationCommandsGuild(applicationID, guildID)
+	}
+
+	res := Request(uri, fasthttp.MethodPut, commands, clientToken)
+	err = json.Unmarshal(res, &createdCommands)
+	return
 }

@@ -35,6 +35,14 @@ func WebhookExecute(ID, token string) string {
 	return fmt.Sprintf("/webhooks/%s/%s", ID, token)
 }
 
+func ApplicationCommandsGlobal(applicationID string) string {
+	return fmt.Sprintf("/applications/%s/commands", applicationID)
+}
+
+func ApplicationCommandsGuild(applicationID, GuildID string) string {
+	return fmt.Sprintf("/applications/%s/guilds/%s/commands", applicationID, GuildID)
+}
+
 func FormatImage(URL, format, size string) string {
 	if format == "" {
 		if strings.Contains(URL, "/a_") {
