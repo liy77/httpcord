@@ -4,11 +4,11 @@ import (
 	"crypto/ed25519"
 	"encoding/hex"
 	"encoding/json"
-	"httpcord/endpoints"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 
+	"github.com/JustAWaifuHunter/httpcord/endpoints"
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
 )

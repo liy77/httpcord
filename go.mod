@@ -1,4 +1,4 @@
-module httpcord
+module github.com/JustAWaifuHunter/httpcord
 
 go 1.18
 

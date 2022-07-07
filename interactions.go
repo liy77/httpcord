@@ -1,7 +1,7 @@
 package httpcord
 
 import (
-	"httpcord/permissions"
+	"github.com/JustAWaifuHunter/httpcord/permissions"
 )
 
 type (
