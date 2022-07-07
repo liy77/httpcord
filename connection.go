@@ -190,56 +190,25 @@ func (ctx *ConnectionContext) DeferReplyInteraction() {
 }
 
 func (ctx *ConnectionContext) EditReply(data *WebhookEdit) {
-	ctx.Request(
+	Request(
 		endpoints.DiscordURL+endpoints.DiscordAPI+endpoints.WebhookMessage(ctx.Interaction.ApplicationID.String(),
 			ctx.Interaction.Token, "@original",
-		), fasthttp.MethodPatch, data,
+		), fasthttp.MethodPatch, data, ctx.clientToken,
 	)
 }
 
 func (ctx *ConnectionContext) FollowUp(data *WebhookEdit) {
-	ctx.Request(
+	Request(
 		endpoints.DiscordURL+endpoints.DiscordAPI+endpoints.WebhookExecute(ctx.Interaction.ApplicationID.String(),
 			ctx.Interaction.Token,
-		), fasthttp.MethodPost, data,
+		), fasthttp.MethodPost, data, ctx.clientToken,
 	)
 }
 
 func (ctx *ConnectionContext) DeleteReply() {
-	ctx.Request(
+	Request(
 		endpoints.DiscordURL+endpoints.DiscordAPI+endpoints.WebhookMessage(ctx.Interaction.ApplicationID.String(),
 			ctx.Interaction.Token, "@original",
-		), fasthttp.MethodDelete, nil,
+		), fasthttp.MethodDelete, nil, ctx.clientToken,
 	)
-}
-
-func (ctx *ConnectionContext) Request(URI, method string, body interface{}) *fasthttp.Response {
-	req := fasthttp.AcquireRequest()
-	res := fasthttp.AcquireResponse()
-
-	req.SetRequestURI(URI)
-
-	if body != nil {
-		b, _ := json.Marshal(body)
-		req.SetBody(b)
-		req.Header.SetContentType("application/json")
-	}
-
-	req.Header.SetMethod(method)
-	req.Header.Set("User-Agent", "HttpInteractionsBot (httpcord, 0.1.0)")
-
-	if ctx.clientToken != "" {
-		req.Header.Set("Authorization", "Bot "+ctx.clientToken)
-	}
-
-	err := fasthttp.Do(req, res)
-
-	if err != nil {
-		panic("Error in request: " + err.Error())
-	}
-
-	fasthttp.ReleaseRequest(req)
-	fasthttp.ReleaseResponse(res)
-
-	return res
 }
