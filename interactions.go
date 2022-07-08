@@ -544,7 +544,7 @@ func (b *ButtonComponent) IsDisabled(disabled bool) *ButtonComponent {
 // ActionRowComponentBuilder
 
 func NewActionRowComponentBuilder() *ActionRowComponent {
-	return &ActionRowComponent{}
+	return &ActionRowComponent{Type: ActionRowComponentType}
 }
 
 func (a *ActionRowComponent) AddComponent(component AnyComponent) *ActionRowComponent {
