@@ -177,7 +177,7 @@ type SelectMenuComponent struct {
 
 type ActionRowComponent struct {
 	Type       ComponentType   `json:"type"`
-	Components []*AnyComponent `json:"components"`
+	Components []AnyComponent `json:"components"`
 }
 
 type Modal struct {
@@ -547,12 +547,12 @@ func NewActionRowComponentBuilder() *ActionRowComponent {
 	return &ActionRowComponent{}
 }
 
-func (a *ActionRowComponent) AddComponent(component *AnyComponent) *ActionRowComponent {
+func (a *ActionRowComponent) AddComponent(component AnyComponent) *ActionRowComponent {
 	a.Components = append(a.Components, component)
 	return a
 }
 
-func (a *ActionRowComponent) SetComponents(components ...*AnyComponent) *ActionRowComponent {
+func (a *ActionRowComponent) SetComponents(components ...AnyComponent) *ActionRowComponent {
 	a.Components = components
 	return a
 }
@@ -584,8 +584,8 @@ func NewCommandBuilder() *ApplicationCommand {
 	return &ApplicationCommand{}
 }
 
-func (c *ApplicationCommand) SetType(Type *ApplicationCommandType) *ApplicationCommand {
-	c.Type = Type
+func (c *ApplicationCommand) SetType(Type ApplicationCommandType) *ApplicationCommand {
+	c.Type = &Type
 	return c
 }
 
