@@ -263,7 +263,7 @@ func (i *Interaction) ModalSubmitData() ModalSubmitInteractionData {
 }
 
 func (i *Interaction) ApplicationCommandData() ApplicationCommandInteractionData {
-	if i.Type != ModalSubmitInteraction {
+	if i.Type != ApplicationCommandInteraction {
 		panic("The Interaction is not a ApplicationCommand")
 	}
 
@@ -271,7 +271,7 @@ func (i *Interaction) ApplicationCommandData() ApplicationCommandInteractionData
 }
 
 func (i *Interaction) ComponentData() ComponentInteractionData {
-	if i.Type != ModalSubmitInteraction {
+	if i.Type != MessageComponentInteraction {
 		panic("The Interaction is not a Component")
 	}
 
