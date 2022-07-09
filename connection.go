@@ -117,6 +117,8 @@ func httpHandler(publicKey ed25519.PublicKey, token string) http.HandlerFunc {
 			panic("Error on get interaction: " + err.Error())
 		}
 
+		interaction = ResolveInteraction(&interaction)
+
 		if interaction.Type == PingInteraction {
 			w.Header().Set("Content-Type", "application/json")
 			err := je.Encode(InteractionResponse{

@@ -1,6 +1,8 @@
 package httpcord
 
 import (
+	"encoding/json"
+
 	"github.com/JustAWaifuHunter/httpcord/permissions"
 )
 
@@ -263,7 +265,7 @@ func (i *Interaction) ModalSubmitData() ModalSubmitInteractionData {
 }
 
 func (i *Interaction) ApplicationCommandData() ApplicationCommandInteractionData {
-	if i.Type != ApplicationCommandInteraction {
+	if i.Type != ApplicationCommandInteraction && i.Type != AutoCompleteInteraction {
 		panic("The Interaction is not a ApplicationCommand")
 	}
 
@@ -662,4 +664,47 @@ func (c *ApplicationCommand) SetNameLocalizations(NameLocalizations Dictionary) 
 func (c *ApplicationCommand) SetDescriptionLocalizations(DescriptionLocalizations Dictionary) *ApplicationCommand {
 	c.DescriptionLocalizations = DescriptionLocalizations
 	return c
+}
+
+func ResolveInteraction(interaction *Interaction) Interaction {
+	marshaledData, err := json.Marshal(interaction.Data)
+
+	if err != nil {
+		panic(err)
+	}
+
+	switch interaction.Type {
+	case MessageComponentInteraction:
+		{
+			var data ComponentInteractionData
+			err = json.Unmarshal(marshaledData, &data)
+			if err != nil {
+				panic(err)
+			}
+
+			interaction.Data = data
+		}
+	case ModalSubmitInteraction:
+		{
+			var data ModalSubmitInteractionData
+			err = json.Unmarshal(marshaledData, &data)
+			if err != nil {
+				panic(err)
+			}
+
+			interaction.Data = data
+		}
+	case ApplicationCommandInteraction:
+		{
+			var data ApplicationCommandInteractionData
+			err = json.Unmarshal(marshaledData, &data)
+			if err != nil {
+				panic(err)
+			}
+
+			interaction.Data = data
+		}
+	}
+
+	return *interaction
 }
