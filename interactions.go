@@ -22,7 +22,7 @@ const (
 	ApplicationCommandInteraction
 	MessageComponentInteraction
 	AutoCompleteInteraction
-	ModelSubmitInteraction
+	ModalSubmitInteraction
 )
 
 // Interaction Callback Types
@@ -93,7 +93,7 @@ type Interaction struct {
 	ID            Snowflake       `json:"id"`
 	ApplicationID Snowflake       `json:"application_id"`
 	Type          InteractionType `json:"type"`
-	Data          InteractionData `json:"data,omitempty"`
+	Data          interface{}     `json:"data,omitempty"`
 	GuildID       Snowflake       `json:"guild_id"`
 	ChannelID     Snowflake       `json:"channel_id"`
 	Member        *Member         `json:"member"`
@@ -105,7 +105,7 @@ type Interaction struct {
 	GuildLocale   string          `json:"guild_locale"`
 }
 
-type InteractionData struct {
+type ApplicationCommandInteractionData struct {
 	ID       Snowflake                    `json:"id"`
 	Name     string                       `json:"name"`
 	Type     ApplicationCommandOptionType `json:"type"`
@@ -176,7 +176,7 @@ type SelectMenuComponent struct {
 }
 
 type ActionRowComponent struct {
-	Type       ComponentType   `json:"type"`
+	Type       ComponentType  `json:"type"`
 	Components []AnyComponent `json:"components"`
 }
 
@@ -243,48 +243,83 @@ type ApplicationCommand struct {
 	Version Snowflake `json:"version,omitempty"`
 }
 
-func (c *InteractionData) UserValue(name string, required bool) *User {
+type ComponentInteractionData struct {
+	CustomID      string        `json:"custom_id"`
+	ComponentType ComponentType `json:"component_type"`
+	Values        []string      `json:"values"`
+}
+
+type ModalSubmitInteractionData struct {
+	CustomID   string                `json:"custom_id"`
+	Components []*ActionRowComponent `json:"components"`
+}
+
+func (i *Interaction) ModalSubmitData() ModalSubmitInteractionData {
+	if i.Type != ModalSubmitInteraction {
+		panic("The Interaction is not a ModalSubmit")
+	}
+
+	return i.Data.(ModalSubmitInteractionData)
+}
+
+func (i *Interaction) ApplicationCommandData() ApplicationCommandInteractionData {
+	if i.Type != ModalSubmitInteraction {
+		panic("The Interaction is not a ApplicationCommand")
+	}
+
+	return i.Data.(ApplicationCommandInteractionData)
+}
+
+func (i *Interaction) ComponentData() ComponentInteractionData {
+	if i.Type != ModalSubmitInteraction {
+		panic("The Interaction is not a Component")
+	}
+
+	return i.Data.(ComponentInteractionData)
+}
+
+func (c *ApplicationCommandInteractionData) UserValue(name string, required bool) *User {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(*User)
 }
 
-func (c *InteractionData) StringValue(name string, required bool) string {
+func (c *ApplicationCommandInteractionData) StringValue(name string, required bool) string {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(string)
 }
 
-func (c *InteractionData) BoolValue(name string, required bool) bool {
+func (c *ApplicationCommandInteractionData) BoolValue(name string, required bool) bool {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(bool)
 }
 
-func (c *InteractionData) MemberValue(name string, required bool) *Member {
+func (c *ApplicationCommandInteractionData) MemberValue(name string, required bool) *Member {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(*Member)
 }
 
-func (c *InteractionData) IntValue(name string, required bool) int {
+func (c *ApplicationCommandInteractionData) IntValue(name string, required bool) int {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(int)
 }
 
-func (c *InteractionData) NumberValue(name string, required bool) float64 {
+func (c *ApplicationCommandInteractionData) NumberValue(name string, required bool) float64 {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(float64)
 }
 
-func (c *InteractionData) ChannelValue(name string, required bool) *Channel {
+func (c *ApplicationCommandInteractionData) ChannelValue(name string, required bool) *Channel {
 	return c.GetOption(name, ChannelApplicationCommandOptionType, required).(*Channel)
 }
 
-func (c *InteractionData) AttachmentValue(name string, required bool) *Attachment {
+func (c *ApplicationCommandInteractionData) AttachmentValue(name string, required bool) *Attachment {
 	return c.GetOption(name, AttachmentApplicationCommandOptionType, required).(*Attachment)
 }
 
 // Returns Member, User or Role
-func (c *InteractionData) MentionableValue(name string, required bool) interface{} {
+func (c *ApplicationCommandInteractionData) MentionableValue(name string, required bool) interface{} {
 	return c.GetOption(name, MentionableApplicationCommandOptionType, required)
 }
 
-func (c *InteractionData) RoleValue(name string, required bool) *Role {
+func (c *ApplicationCommandInteractionData) RoleValue(name string, required bool) *Role {
 	return c.GetOption(name, UserApplicationCommandOptionType, required).(*Role)
 }
 
-func (c *InteractionData) SubCommand() ApplicationCommandOption {
+func (c *ApplicationCommandInteractionData) SubCommand() ApplicationCommandOption {
 	option := c.Options[0]
 
 	if option.Type != SubCommandApplicationCommandOptionType {
@@ -294,7 +329,7 @@ func (c *InteractionData) SubCommand() ApplicationCommandOption {
 	return option
 }
 
-func (c *InteractionData) SubCommandGroup() ApplicationCommandOption {
+func (c *ApplicationCommandInteractionData) SubCommandGroup() ApplicationCommandOption {
 	option := c.Options[0]
 
 	if option.Type != SubCommandApplicationCommandOptionType {
@@ -304,7 +339,7 @@ func (c *InteractionData) SubCommandGroup() ApplicationCommandOption {
 	return option
 }
 
-func (c *InteractionData) GetOption(name string, Type ApplicationCommandOptionType, required bool) interface{} {
+func (c *ApplicationCommandInteractionData) GetOption(name string, Type ApplicationCommandOptionType, required bool) interface{} {
 	for _, option := range c.Options {
 		if option.Name == name && option.Type == Type {
 			return option.Value
