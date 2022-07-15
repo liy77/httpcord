@@ -666,8 +666,18 @@ func (c *ApplicationCommand) SetDescriptionLocalizations(DescriptionLocalization
 	return c
 }
 
-func ResolveInteraction(interaction *Interaction) Interaction {
-	marshaledData, err := json.Marshal(interaction.Data)
+func ResolveInteraction(rawInteraction *APIInteraction) Interaction {
+	interaction := &Interaction{
+		ID:            Snowflake(rawInteraction.ID),
+		ApplicationID: Snowflake(rawInteraction.ApplicationID),
+		Type:          rawInteraction.Type,
+		GuildID:       Snowflake(rawInteraction.GuildID),
+		ChannelID:     Snowflake(rawInteraction.ChannelID),
+		User:          ResolveUser(rawInteraction.User),
+		Member:        ResolveMember(rawInteraction.Member),
+	}
+
+	marshaledData, err := json.Marshal(rawInteraction.Data)
 
 	if err != nil {
 		panic(err)
