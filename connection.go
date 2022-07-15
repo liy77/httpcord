@@ -169,7 +169,7 @@ func httpHandler(publicKey ed25519.PublicKey, token string) http.HandlerFunc {
 		}
 
 		for _, h := range InteractionHandlers {
-			defer h(ctx)
+			h(ctx)
 		}
 	})
 }
