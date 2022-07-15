@@ -29,7 +29,7 @@ func (s Snowflake) Valid(id Snowflake) bool {
 	return validSnowflake(id)
 }
 
-// Get epoch of id
+// Epoch Get epoch of id
 func Epoch(id Snowflake) float64 {
 	if !validSnowflake(id) {
 		panic("Invalid snowflake for Epoch")
@@ -45,4 +45,15 @@ func validSnowflake(snowflake Snowflake) bool {
 	}
 
 	return true
+}
+
+func StringArrayToSnowflakeArray(arr []string) []*Snowflake {
+	var snowflakeArr []*Snowflake
+
+	for _, snowflake := range arr {
+		s := Snowflake(snowflake)
+		snowflakeArr = append(snowflakeArr, &s)
+	}
+
+	return snowflakeArr
 }
