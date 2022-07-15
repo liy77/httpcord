@@ -26,30 +26,30 @@ func (t *Time) Format(style TimestampStyle) string {
 	return fmt.Sprintf("<t:%d:%s>", t.Unix(), style)
 }
 
-func (t Time) ShortTime() string {
+func (t *Time) ShortTime() string {
 	return t.Format(ShortTimeStyle)
 }
 
-func (t Time) LongTime() string {
+func (t *Time) LongTime() string {
 	return t.Format(LongTimeStyle)
 }
 
-func (t Time) ShortDate() string {
+func (t *Time) ShortDate() string {
 	return t.Format(ShortDateStyle)
 }
 
-func (t Time) LongDate() string {
+func (t *Time) LongDate() string {
 	return t.Format(LongDateStyle)
 }
 
-func (t Time) ShortDateTime() string {
+func (t *Time) ShortDateTime() string {
 	return t.Format(ShortDateTimeStyle)
 }
 
-func (t Time) LongDateTime() string {
+func (t *Time) LongDateTime() string {
 	return t.Format(LongDateTimeStyle)
 }
 
-func (t Time) Relative() string {
+func (t *Time) Relative() string {
 	return t.Format(RelativeStyle)
 }

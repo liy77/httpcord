@@ -13,7 +13,7 @@ func (i ImageFormat) String() string {
 const (
 	JpegImageFormat   ImageFormat = "jpg"
 	PngImageFormat    ImageFormat = "png"
-	WebpImageFormat   ImageFormat = "webp"
 	GifImageFormat    ImageFormat = "gif"
+	WebpImageFormat   ImageFormat = "webp"
 	LottieImageFormat ImageFormat = "json"
 )

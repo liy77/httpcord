@@ -219,29 +219,29 @@ type ApplicationCommandOption struct {
 type ApplicationCommand struct {
 	// ID is the unique id of the command
 	ID Snowflake `json:"id,omitempty"`
-	// Type is	the type of command, defaults 1 if not set
+	// ApplicationCommandType is	the type of command, defaults 1 if not set
 	Type *ApplicationCommandType `json:"type,omitempty"`
-	// Application ID is the unique id of the parent application
+	// ApplicationID is the unique id of the parent application
 	ApplicationID Snowflake `json:"application_id,omitempty"`
 	// GuildID guild id of the command, if not global
 	GuildID *Snowflake `json:"guild_id,omitempty"`
 	// Name is a 1-32 character name
 	Name string `json:"name"`
-	// Localization dictionary for name field. Values follow the same restrictions as name
+	// NameLocalizations dictionary for name field. Values follow the same restrictions as name
 	NameLocalizations Dictionary `json:"name_localizations,omitempty"`
 	// Description is a 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands
 	Description string `json:"description,omitempty"`
-	// Localization dictionary for description field. Values follow the same restrictions as description
+	// DescriptionLocalizations dictionary for description field. Values follow the same restrictions as description
 	DescriptionLocalizations Dictionary `json:"description_localizations,omitempty"`
 	// Options are the parameters for the command, max 25, only valid for CHAT_INPUT commands
 	Options []ApplicationCommandOption `json:"options"`
-	// Set of permissions represented as a bit set
+	// DefaultPermissions Set of permissions represented as a bit set
 	DefaultPermissions *permissions.PermissionBit `json:"default_member_permissions,omitempty"`
-	// Indicates whether the command is available in DMs with the app, only for globally-scoped commands. By default, commands are visible.
+	// AllowUseInDMs Indicates whether the command is available in DMs with the app, only for globally-scoped commands. By default, commands are visible.
 	AllowUseInDMs *bool `json:"dm_permission,omitempty"`
 	// DefaultPermission is whether the command is enabled by default when the app is added to a guild
 	DefaultPermission *bool `json:"default_permission,omitempty"`
-	// Version is an autoincrementing version identifier updated during substantial record changes
+	// Version is an autoincrement version identifier updated during substantial record changes
 	Version Snowflake `json:"version,omitempty"`
 }
 
@@ -312,7 +312,7 @@ func (c *ApplicationCommandInteractionData) AttachmentValue(name string, require
 	return c.GetOption(name, AttachmentApplicationCommandOptionType, required).(*Attachment)
 }
 
-// Returns Member, User or Role
+// MentionableValue MentionableValue Returns Member, User or Role
 func (c *ApplicationCommandInteractionData) MentionableValue(name string, required bool) interface{} {
 	return c.GetOption(name, MentionableApplicationCommandOptionType, required)
 }

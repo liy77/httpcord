@@ -1,12 +1,12 @@
 package httpcord
 
 type Embed struct {
-	Title       string          `json:"title,omitempty"`
+	Title string `json:"title,omitempty"`
 	// Always "rich" for webhook embeds
 	Type        string          `json:"type,omitempty"`
 	Description string          `json:"description,omitempty"`
 	URL         string          `json:"url,omitempty"`
-	Timestamp   Time            `json:"timetimestamp"`
+	Timestamp   Time            `json:"timestamp"`
 	Color       int             `json:"color,omitempty"`
 	Footer      *EmbedFooter    `json:"footer,omitempty"`
 	Image       *EmbedImage     `json:"image,omitempty"`

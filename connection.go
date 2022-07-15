@@ -79,19 +79,18 @@ func NewConnection(options ConnectionOptions) Connection {
 
 }
 
-func (c Connection) Connect(adress string) error {
+func (c Connection) Connect(address string) error {
 	if c.FastHandler != nil {
-		return fasthttp.ListenAndServe(adress, c.FastHandler)
+		return fasthttp.ListenAndServe(address, c.FastHandler)
 	}
 
-	return http.ListenAndServe(adress, c.DefaultHandler)
+	return http.ListenAndServe(address, c.DefaultHandler)
 }
 
 func httpHandler(publicKey ed25519.PublicKey, token string) http.HandlerFunc {
-	var (
-		res InteractionResponse
-	)
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	var res InteractionResponse
+
+	return func(w http.ResponseWriter, r *http.Request) {
 		je := json.NewEncoder(w)
 		signature := r.Header.Get("X-Signature-Ed25519")
 		timestamp := r.Header.Get("X-Signature-Timestamp")
@@ -171,7 +170,7 @@ func httpHandler(publicKey ed25519.PublicKey, token string) http.HandlerFunc {
 		for _, h := range InteractionHandlers {
 			h(ctx)
 		}
-	})
+	}
 }
 
 func (c Connection) AddInteractionHandler(handler func(ctx ConnectionContext)) {

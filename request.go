@@ -19,7 +19,7 @@ func Request(URI, method string, body interface{}, clientToken string) []byte {
 	}
 
 	req.Header.SetMethod(method)
-	req.Header.Set("User-Agent", "HttpInteractionsBot (httpcord, 0.1.0)")
+	req.Header.Set("User-Agent", "HttpInteractionsBot (http-cord, 0.1.0)")
 
 	if clientToken != "" {
 		req.Header.Set("Authorization", "Bot "+clientToken)

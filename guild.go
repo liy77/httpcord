@@ -47,7 +47,7 @@ type Guild struct {
 	PreferredLocale             string                    `json:"preferred_locale"`
 }
 
-func (g Guild) IconURL(size string) string {
+func (g *Guild) IconURL(size string) string {
 	if g.Icon == "" {
 		return ""
 	}
@@ -55,19 +55,19 @@ func (g Guild) IconURL(size string) string {
 	return endpoints.FormatImage(endpoints.GuildIconURL(g.ID.String(), g.Icon), "", size)
 }
 
-func (g Guild) StaticIconURL(size string) string {
+func (g *Guild) StaticIconURL(size string) string {
 	if g.Icon == "" {
 		return ""
 	}
-	
+
 	return endpoints.FormatImage(endpoints.GuildIconURL(g.ID.String(), g.Icon), JpegImageFormat.String(), size)
 }
 
-func (g Guild) DynamicIconURL(format ImageFormat, size string) string {
+func (g *Guild) DynamicIconURL(format ImageFormat, size string) string {
 	if g.Icon == "" {
 		return ""
 	}
-	
+
 	return endpoints.FormatImage(endpoints.GuildIconURL(g.ID.String(), g.Icon), format.String(), size)
 }
 
