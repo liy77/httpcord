@@ -110,14 +110,14 @@ func httpHandler(publicKey ed25519.PublicKey, token string) http.HandlerFunc {
 			return
 		}
 
-		var interaction Interaction
-		err = json.Unmarshal(bodyBytes, &interaction)
+		var rawInteraction APIInteraction
+		err = json.Unmarshal(bodyBytes, &rawInteraction)
 
 		if err != nil {
 			panic("Error on get interaction: " + err.Error())
 		}
 
-		interaction = ResolveInteraction(&interaction)
+		interaction := ResolveInteraction(&rawInteraction)
 
 		if interaction.Type == PingInteraction {
 			w.Header().Set("Content-Type", "application/json")
