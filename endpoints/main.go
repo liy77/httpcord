@@ -11,6 +11,22 @@ const (
 	DiscordURL = "https://discord.com"
 )
 
+func Messages(channelID string) string {
+	return fmt.Sprintf("/channels/%s/messages", channelID)
+}
+
+func Message(channelID, messageID string) string {
+	return fmt.Sprintf("/channels/%s/messages/%s", channelID, messageID)
+}
+
+func Reactions(channelID, messageID string) string {
+	return fmt.Sprintf("/channels/%s/messages/%s/reactions", channelID, messageID)
+}
+
+func UserReaction(channelID, messageID, reaction, userID string) string {
+	return fmt.Sprintf("/channels/%s/messages/%s/reactions/%s/%s", channelID, messageID, reaction, userID)
+}
+
 func DefaultUserAvatar(DefaultAvatar int) string {
 	return fmt.Sprintf("/embed/avatars/%d", DefaultAvatar)
 }
@@ -53,4 +69,8 @@ func FormatImage(URL, format, size string) string {
 	}
 
 	return DiscordCDN + URL + "." + format + "?size=" + size
+}
+
+func FormatAPIURI(URI string) string {
+	return fmt.Sprintf("%s%s%s", DiscordURL, DiscordAPI, URI)
 }
