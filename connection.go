@@ -10,7 +10,6 @@ import (
 
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
-	"httpcord/endpoints"
 )
 
 type HttpConnection int
@@ -190,26 +189,20 @@ func (ctx *ConnectionContext) DeferReplyInteraction() {
 	})
 }
 
-func (ctx *ConnectionContext) EditReply(data *WebhookEdit) {
-	Request(
-		endpoints.DiscordURL+endpoints.DiscordAPI+endpoints.WebhookMessage(ctx.Interaction.ApplicationID.String(),
-			ctx.Interaction.Token, "@original",
-		), fasthttp.MethodPatch, data, ctx.clientToken,
-	)
+func (ctx *ConnectionContext) DeferUpdateInteraction() {
+	ctx.SendRes(&InteractionResponse{
+		Type: DeferredUpdateResponse,
+	})
 }
 
-func (ctx *ConnectionContext) FollowUp(data *WebhookEdit) {
-	Request(
-		endpoints.DiscordURL+endpoints.DiscordAPI+endpoints.WebhookExecute(ctx.Interaction.ApplicationID.String(),
-			ctx.Interaction.Token,
-		), fasthttp.MethodPost, data, ctx.clientToken,
-	)
+func (ctx *ConnectionContext) EditReply(data *WebhookEdit) {
+	EditOriginalInteractionResponse(ctx.Interaction.ApplicationID.String(), ctx.Interaction.Token, data)
 }
 
 func (ctx *ConnectionContext) DeleteReply() {
-	Request(
-		endpoints.DiscordURL+endpoints.DiscordAPI+endpoints.WebhookMessage(ctx.Interaction.ApplicationID.String(),
-			ctx.Interaction.Token, "@original",
-		), fasthttp.MethodDelete, nil, ctx.clientToken,
-	)
+	DeleteOriginalInteractionResponse(ctx.Interaction.ApplicationID.String(), ctx.Interaction.Token)
+}
+
+func (ctx *ConnectionContext) FollowUp(data *WebhookEdit) {
+	FollowUpInteractionResponse(ctx.Interaction.ApplicationID.String(), ctx.Interaction.Token, data)
 }
