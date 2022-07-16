@@ -11,3 +11,8 @@ require (
 	github.com/klauspost/compress v1.15.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 )
+
+retract (
+	v0.1.0
+	[v0.1.0, v0.1.4]
+)
