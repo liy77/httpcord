@@ -7,7 +7,7 @@ Inspired by [Discord Interactions](https://github.com/discord/discord-interactio
 ```go
 package main
 
-import "httpcord"
+import "github.com/JustAWaifuHunter/httpcord"
 
 func main() {
 	connection := httpcord.NewConnection(httpcord.ConnectionOptions{
