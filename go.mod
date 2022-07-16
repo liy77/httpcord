@@ -3,7 +3,6 @@ module httpcord
 go 1.18
 
 require (
-	github.com/JustAWaifuHunter/httpcord v0.1.4
 	github.com/valyala/fasthttp v1.38.0
 )
 
