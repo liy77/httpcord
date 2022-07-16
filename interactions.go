@@ -666,14 +666,23 @@ func (c *ApplicationCommand) SetDescriptionLocalizations(DescriptionLocalization
 }
 
 func ResolveInteraction(rawInteraction *APIInteraction) Interaction {
+	if rawInteraction.Type == PingInteraction {
+		return Interaction{Type: rawInteraction.Type}
+	}
+
 	interaction := &Interaction{
 		ID:            Snowflake(rawInteraction.ID),
 		ApplicationID: Snowflake(rawInteraction.ApplicationID),
 		Type:          rawInteraction.Type,
 		GuildID:       Snowflake(rawInteraction.GuildID),
 		ChannelID:     Snowflake(rawInteraction.ChannelID),
-		User:          ResolveUser(rawInteraction.User),
-		Member:        ResolveMember(rawInteraction.Member),
+	}
+
+	if interaction.GuildID.String() != "" {
+		interaction.Member = ResolveMember(rawInteraction.Member)
+		interaction.User = ResolveUser(rawInteraction.Member.User)
+	} else {
+		interaction.User = ResolveUser(rawInteraction.User)
 	}
 
 	marshaledData, err := json.Marshal(rawInteraction.Data)
