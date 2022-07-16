@@ -2,8 +2,7 @@ package httpcord
 
 import (
 	"encoding/json"
-
-	"github.com/JustAWaifuHunter/httpcord/permissions"
+	"httpcord/permissions"
 )
 
 type (

@@ -3,7 +3,7 @@ package httpcord
 import (
 	"strconv"
 
-	"github.com/JustAWaifuHunter/httpcord/permissions"
+	"httpcord/permissions"
 )
 
 type Member struct {

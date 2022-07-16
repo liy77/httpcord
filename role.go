@@ -1,6 +1,6 @@
 package httpcord
 
-import "github.com/JustAWaifuHunter/httpcord/permissions"
+import "httpcord/permissions"
 
 type Role struct {
 	ID           Snowflake                  `json:"id"`

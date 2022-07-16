@@ -3,8 +3,8 @@ package httpcord
 import (
 	"encoding/json"
 
-	"github.com/JustAWaifuHunter/httpcord/endpoints"
 	"github.com/valyala/fasthttp"
+	"httpcord/endpoints"
 )
 
 func Request(URI, method string, body interface{}, clientToken string) []byte {

@@ -8,9 +8,9 @@ import (
 	"mime/multipart"
 	"net/http"
 
-	"github.com/JustAWaifuHunter/httpcord/endpoints"
 	"github.com/valyala/fasthttp"
 	"github.com/valyala/fasthttp/fasthttpadaptor"
+	"httpcord/endpoints"
 )
 
 type HttpConnection int

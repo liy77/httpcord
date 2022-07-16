@@ -1,7 +1,7 @@
 package httpcord
 
 import (
-	"github.com/JustAWaifuHunter/httpcord/endpoints"
+	"httpcord/endpoints"
 	"strconv"
 )
 

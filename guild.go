@@ -1,6 +1,6 @@
 package httpcord
 
-import "github.com/JustAWaifuHunter/httpcord/endpoints"
+import "httpcord/endpoints"
 
 type (
 	GuildVerificationLevel    int
